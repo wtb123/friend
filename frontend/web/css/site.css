@@ -5,7 +5,6 @@ body {
 .content-padded
 {
     background-color: red;
-    font: bold;
 }
 .wrap {
     min-height: 100%;
