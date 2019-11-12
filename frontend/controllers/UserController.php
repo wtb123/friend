@@ -6,7 +6,7 @@ use Yii;
 use common\models\User;
 use common\models\UserSearch;
 use common\models\Application;
-use yii\web\Controller;
+use yii\helpers\Html;use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
+    public $added=0;
     /**
      * {@inheritdoc}
      */
@@ -111,10 +112,12 @@ class UserController extends Controller
        $model=$this->findModel($id);
        if($model->application())
        {
+          // $this->added=1; 弹窗提示发送申请成功，待补充
            return $this->redirect(['view', 'id' => $model->id]);
        }
        else
        {
+
            echo "申请失败"; //如何做一个弹框出来呢？（待补充）
        }
     }

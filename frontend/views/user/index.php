@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -37,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'verification_token',
             'phone_number',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{view}{update}' ,
+              'template'=>'{view}{update}{delete}' ,
                 'buttons'=>[
                 'update'=>function($url,$model,$key)
                 {
@@ -48,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'data-method'=>'post',
                         'data-pjax'=>0,
                     ];
-                    return Html::a('<span class="glyphicon glyphicon-check"></span>'
+                    return Html::a('<span class="glyphicon glyphicon-plus"></span>'
                     ,$url,$options);
                 }],
                 ],

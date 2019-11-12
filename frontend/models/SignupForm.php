@@ -68,6 +68,7 @@ class SignupForm extends Model
      */
     protected function sendEmail($user)
     {
+
         return Yii::$app
             ->mailer
             ->compose(

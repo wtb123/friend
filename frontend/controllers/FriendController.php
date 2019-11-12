@@ -10,12 +10,15 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use common\models\Comment;
+use common\models\User;
 
 /**
  * FriendController implements the CRUD actions for Friend model.
  */
 class FriendController extends Controller
 {
+    public $added=0;   //0代表没有新回复
     /**
      * {@inheritdoc}
      */
@@ -37,6 +40,17 @@ class FriendController extends Controller
      */
     public function actionIndex()
     {
+        /*$mail= Yii::$app->mailer->compose();
+        $mail->setFrom('1332101458@qq.com');
+        $mail->setTo('1332101459@qq.com');
+        $mail->setSubject("邮件测试");
+        $mail->setTextBody('zheshisha ');   //发布纯文字文本
+        $mail->setHtmlBody("<br>问我我我我我");    //发布可以带html标签的文本
+        if($mail->send())
+            echo "success";
+        else
+            echo "failse";
+        die();*/
         $searchModel=new FriendSearch();
         $dataProvider=$searchModel->search(Yii::$app->request->queryParams);
 
@@ -45,8 +59,10 @@ class FriendController extends Controller
             'searchModel'=>$searchModel,
         ]);
     }
-    public function actionMyPublish()
+
+     public function actionMyPublish()
     {
+
         $searchModel=new FriendSearch();
         $dataProvider=$searchModel->searchMyPublish(Yii::$app->request->queryParams);
         return $this->render('my-publish', [
@@ -163,5 +179,30 @@ class FriendController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDetail($id)
+    {
+        //step1.准备数据
+        $model=$this->findModel($id);     //当前朋友圈
+        $userMe=User::findOne(Yii::$app->user->id);  //当前用户的资料
+        $commentModel=new Comment();                //新建一个评论类，发表评论时候用到
+        $commentModel->user_id=$userMe->id;
+        //step2.当评论提交，处理评论
+        if($commentModel->load(Yii::$app->request->post()))
+        {
+            $commentModel->friendcir_id=$id;  //写明是哪一条朋友圈
+            if($commentModel->save())
+            {
+                $this->added=1;
+            }
+        }
+
+        //step3.传数据给视图渲染
+        return $this->render('detail',[
+            'model'=>$model,
+            'commentModel'=>$commentModel,
+            'added'=>$this->added,
+        ]);
     }
 }

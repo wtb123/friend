@@ -37,8 +37,8 @@ AppAsset::register($this);
         ],
     ]);
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '注册', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => '登陆', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '创建账户', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => '用户登陆', 'url' => ['/site/login']];
     } else {
         $menuItems = [
             // ['label' => 'Home', 'url' => ['/site/index']],
@@ -46,10 +46,10 @@ AppAsset::register($this);
             //['label' => 'Contact', 'url' => ['/site/contact']],
             // ['label' => '注册', 'url' => ['/site/signup']],
             ['label' => '朋友圈', 'url' => ['/friend/index']],
-            ['label' => '通讯录', 'url' => ['/user/friend-list']],
             ['label' => '发朋友圈', 'url' => ['/friend/upload']],
-            ['label' => '待审核好友', 'url' => ['/application/index']],
-            '<li><span class="badge badge-inverse">'.Application::getApplicationCount().'</span></li>',
+            ['label' => '通讯录', 'url' => ['/user/friend-list']],
+           // ['label' => '待审核好友', 'url' => ['/application/index']],
+           // '<li><span class="badge badge-inverse">'.Application::getApplicationCount().'</span></li>',
         ];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

@@ -1,7 +1,9 @@
 <?php
 
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\web\View;
 use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
@@ -10,49 +12,44 @@ use yii\widgets\ListView;
 $this->title = '朋友圈';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="friend-index">
+<div class="container">
+    <?php //Html::a('发朋友圈', ['upload'], ['class' => 'btn btn-success']) ?>
+    <div class="row">
 
-    <h1><?php //echo  Html::encode($this->title) ?></h1>
+        <div class="col-md-9">
+            <?= ListView::widget([
+                'id'=>'friendlist',
+                'dataProvider'=>$dataProvider,
+                'itemView'=>'_listitem',//子视图，显示一个朋友圈内容.
+                'layout'=>'{items}{pager}',
+                'pager'=>[
+                    'maxButtonCount'=>3,
+                    'nextPageLabel'=>Yii::t('app','下一页'),
+                    'prevPageLabel'=>Yii::t('app','上一页'),
+                ],
+            ])?>
+        </div>
+<!--搜索框功能，暂时还没有实现
+        <div class="col-md-3">
 
-    <p>
-        <?= Html::a('发朋友圈', ['upload'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('我的发布', ['my-publish'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <div class="searchbox">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查找朋友圈
+                    </li>
+                    <li class="list-group-item">
+                        <form class="form-inline" action="index.php?r=friend/index" id="w0" method="get">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="FriendSearch[id]" id="w0input" placeholder="按用户">
+                            </div>
+                            <button type="submit" class="btn btn-default">搜索</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel'=>$searchModel,
-        'columns' => [
-         //   ['class' => 'yii\grid\SerialColumn'],
-
-            // 'id',
-            // 'user_id',
-            [
-             'attribute'=>'user_id',
-             'value'=>'user.username',
-            ],
-             'content',
-            //'picture_url',
-            [
-             'attribute'=>'picture_url',
-             'format'=>'raw',
-             'value'=>function ($model)
-             {
-                 return Html::img($model->picture_url);
-             }
-            ],
-           // 'create_time:datetime',
-            [
-             'attribute'=>'create_time',
-               'format'=>['date','php:Y-m-d H:i:s'],
-               // 'value'=>date('Y-m-d H:i:s',$model->create_time),
-            ],
-           // 'picture_url',
-           ['class' => 'yii\grid\ActionColumn',
-               'template'=>'{view}{delete}'],
-        ],
-    ]); ?>
-
-
+-->
+    </div>
 </div>
+

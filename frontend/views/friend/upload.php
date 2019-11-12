@@ -13,18 +13,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="friend-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    <div class="content-padded">
+    <div class="form-group">
     <?php $form = ActiveForm::begin(['options'=>['entype'=>'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'content')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'content',['inputOptions'=>['placeholder'=>'记录身边人，身边事']])->textarea(['rows' =>6,'cols'=>50])->label(false) ?>
 
-    <?= $form->field($model, 'imageFile')->fileInput() ?>
+    <?= $form->field($model, 'imageFile')->fileInput()->label(false) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('发表', ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton('创建', ['class' => 'btn btn-success']) ?>
     </div>
-
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

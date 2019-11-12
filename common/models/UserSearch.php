@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\User;
 use common\models\FriendList;
+use common\models\FriendSearch;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -85,19 +86,17 @@ class UserSearch extends User
      */
     public function searchFriendList($params)
     {
-        $queryFriendList=(new \yii\db\query())
-            ->select(['user_id','friend_id'])
-            ->from('friend_list')
-            ->where(['or','user_id=:user_id','friend_id=:friend_id'])
-            ->addParams([':user_id'=>Yii::$app->user->identity->id,
-                ':friend_id'=>Yii::$app->user->identity->id])
-            ->all();
-        $queryArray=ArrayHelper::map($queryFriendList,'user_id','friend_id');
-        $queryArray1=array_keys($queryArray);
-        $queryArray2=array_values($queryArray);
-        $queryArray=array_merge($queryArray1,$queryArray2);
-
-        $query = User::find()->where(['id'=>$queryArray]);
+        $queryFriendList=(new FriendSearch())->getFriendList();
+        //在好友列表中不用展现用户自己
+        foreach ($queryFriendList as $key=>$value)
+        {
+            if($value==Yii::$app->user->identity->id)
+                unset($queryFriendList[$key]);
+        }
+       // echo "<pre>";
+       // print_r($queryFriendList);
+        //exit(0);
+        $query = User::find()->where(['id'=>$queryFriendList]);
 
         // add conditions that should always apply here
 

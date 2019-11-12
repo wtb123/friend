@@ -4,8 +4,9 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\User;
-use yii\data\ActiveDataProvider;
-use yii\web\Controller;
+use common\models\UserSearch;
+use common\models\Application;
+use yii\helpers\Html;use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -14,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
+    public $added=0;
     /**
      * {@inheritdoc}
      */
@@ -35,11 +37,21 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find(),
-        ]);
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionFriendList()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->searchFriendList(Yii::$app->request->queryParams);
+        return $this->render('friend-list',[
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -82,7 +94,7 @@ class UserController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -94,7 +106,21 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
+*/
+    public function actionUpdate($id)
+    {
+       $model=$this->findModel($id);
+       if($model->application())
+       {
+          // $this->added=1; 弹窗提示发送申请成功，待补充
+           return $this->redirect(['view', 'id' => $model->id]);
+       }
+       else
+       {
 
+           echo "申请失败"; //如何做一个弹框出来呢？（待补充）
+       }
+    }
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

@@ -42,32 +42,30 @@ class FriendSearch extends Friend
      */
     public function search($params)
     {
-        $queryFriendList=(new \yii\db\query())
+
+        /*第一次，没有找到好的方法，用了比较复杂的方法提取一个用户的所有好友组数
+         * $queryFriendList=(new \yii\db\query())
             ->select(['user_id','friend_id'])
             ->from('friend_list')
             ->where(['or','user_id=:user_id','friend_id=:friend_id'])
             ->addParams([':user_id'=>Yii::$app->user->identity->id,
                          ':friend_id'=>Yii::$app->user->identity->id])
-           ->all();
-        //var_dump($queryFriendList->createCommand()->getRawSql());
-        //exit(0);
+            ->all();
         $queryArray=ArrayHelper::map($queryFriendList,'user_id','friend_id');
         $queryArray1=array_keys($queryArray);
         $queryArray2=array_values($queryArray);
         $queryArray=array_merge($queryArray1,$queryArray2);
-       /* echo "<pre>";
-        print_r($queryArray1);
-        print_r($queryArray2);
-        print_r($queryArray);
-        exit(0);*/
+        */
 
-       //这里有待优化，应该有更简单的方法处理要提取的数组，而且此处$queryArray有冗余
-        $query = Friend::find()->where(['user_id'=>$queryArray]);
+
+        $queryResult=$this->getFriendList();
+        $query = Friend::find()->where(['user_id'=>$queryResult]);
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>['pageSize'=>5],
+            'pagination'=>['pageSize'=>3],
         ]);
 
         $this->load($params);
@@ -120,5 +118,31 @@ class FriendSearch extends Friend
             ->andFilterWhere(['like', 'picture_url', $this->picture_url]);
 
         return $dataProvider;
+    }
+
+    /**获取用户好友id数组，这个函数在Friend中也会用到
+     * @return array
+     */
+    public function getFriendList()
+    {
+        //更新，此处使用联合查询
+        $queryFriendId=(new \yii\db\Query())
+            ->select('friend_id')
+            ->from('friend_list')
+            ->where('user_id=:user_id')
+            ->addParams([':user_id'=>Yii::$app->user->identity->id]);
+
+        $queryUserId=(new \yii\db\Query())
+            ->select('user_id')
+            ->from('friend_list')
+            ->where('friend_id=:friend_id')
+            ->addParams([':friend_id'=>Yii::$app->user->identity->id]);
+
+        $queryResult=$queryFriendId->union($queryUserId,true)->all();
+        $queryResult=array_column($queryResult,'friend_id');
+
+        //如果新用户没有好友，也可以发布朋友圈，所以需要加上作者自己
+        $queryResult[]=Yii::$app->user->identity->id;
+        return $queryResult;
     }
 }

@@ -43,7 +43,6 @@ class FriendListSearch extends FriendList
            ->where(['or','user_id=:user_id','friend_id=:friend_id'])
            ->addParams([':user_id'=>Yii::$app->user->identity->id,
                         ':friend_id'=>Yii::$app->user->identity->id]);
-        // add conditions that should always apply here
        //var_dump($query->createCommand()->getRawSql());
        //exit(0);
         $dataProvider = new ActiveDataProvider([

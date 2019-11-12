@@ -32,9 +32,10 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['friendcir_id', 'content', 'create_time', 'user_id'], 'integer'],
+            [['friendcir_id', 'create_time', 'user_id'], 'integer'],
             [['friendcir_id'], 'exist', 'skipOnError' => true, 'targetClass' => Friend::className(), 'targetAttribute' => ['friendcir_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['content'],'string','max'=>256],
         ];
     }
 
@@ -67,4 +68,20 @@ class Comment extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    /**
+     * @param bool $insert
+     * 重写beforeSave()函数，自动保存每条评论的建立时间
+     */
+    public function beforeSave($insert)
+    {
+         if(parent::beforeSave($insert))
+         {
+             $this->create_time=time();
+             return true;
+         }
+         return false;
+    }
+
+
 }

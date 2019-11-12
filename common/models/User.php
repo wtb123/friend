@@ -234,9 +234,11 @@ class User extends ActiveRecord implements IdentityInterface
              ->exists();
 
         if(!$exist)
-        { return true;}
+        {
+            return true;
+        }
         else
-            {
+        {
             $applicationModel->user_id=$this->id;
             $applicationModel->friend_id=Yii::$app->user->identity->id;
             $applicationModel->save();

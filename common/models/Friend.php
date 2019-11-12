@@ -3,7 +3,10 @@
 namespace common\models;
 
 use Yii;
+use common\models\Comment;
 use yii\web\UploadedFile;
+use common\models\FriendSearch;
+
 
 /**
  * This is the model class for table "friend".
@@ -60,7 +63,11 @@ class Friend extends \yii\db\ActiveRecord
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['friendcir_id' => 'id']);
+
+       $queryResult=(new FriendSearch())->getFriendList();
+       $comments=Comment::find()->where(['AND',['user_id'=>$queryResult],['friendcir_id'=>$this->id]])->all();
+       return $comments;
+       //return $this->hasMany(Comment::className(), ['friendcir_id' => 'id']);
     }
 
     /**
@@ -123,5 +130,27 @@ class Friend extends \yii\db\ActiveRecord
         }
 
         return $dir;
+    }
+
+    /*
+     * 给每篇朋友圈view生成一个链接，_listitem子视图中会有调用
+     */
+    public function getUrl()
+    {
+        return Yii::$app->urlManager->createUrl(
+            [
+                'friend/detail',
+                'id'=>$this->id,
+            ]
+        );
+    }
+
+    /**
+     * @return mixed
+     * 获取每条朋友圈的评论条数，在friend/_listitem.php子视图中有用到
+     */
+    public function getCommentCount()
+    {
+        return Comment::find()->where(['friendcir_id'=>$this->id])->count();
     }
 }
