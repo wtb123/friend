@@ -29,6 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ])?>
         </div>
+        <div class="col-md-3">
+        </div>
 <!--搜索框功能，暂时还没有实现
         <div class="col-md-3">
 

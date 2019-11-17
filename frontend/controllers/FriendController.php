@@ -40,17 +40,7 @@ class FriendController extends Controller
      */
     public function actionIndex()
     {
-        /*$mail= Yii::$app->mailer->compose();
-        $mail->setFrom('1332101458@qq.com');
-        $mail->setTo('1332101459@qq.com');
-        $mail->setSubject("邮件测试");
-        $mail->setTextBody('zheshisha ');   //发布纯文字文本
-        $mail->setHtmlBody("<br>问我我我我我");    //发布可以带html标签的文本
-        if($mail->send())
-            echo "success";
-        else
-            echo "failse";
-        die();*/
+
         $searchModel=new FriendSearch();
         $dataProvider=$searchModel->search(Yii::$app->request->queryParams);
 

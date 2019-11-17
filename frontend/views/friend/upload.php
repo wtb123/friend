@@ -12,16 +12,17 @@ $this->params['breadcrumbs'][] = ['label' => '朋友圈', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="friend-create">
-
+    <div class="padded">
     <div class="content-padded">
     <div class="form-group">
     <?php $form = ActiveForm::begin(['options'=>['entype'=>'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'content',['inputOptions'=>['placeholder'=>'记录身边人，身边事']])->textarea(['rows' =>6,'cols'=>50])->label(false) ?>
+    <?= $form->field($model, 'content',['inputOptions'=>['placeholder'=>'记录身边人，身边事']])->textarea(['rows' =>7,'cols'=>50])->label(false) ?>
 
     <?= $form->field($model, 'imageFile')->fileInput()->label(false) ?>
 
     <?= Html::submitButton('创建', ['class' => 'btn btn-success']) ?>
+    </div>
     </div>
     </div>
     <?php ActiveForm::end(); ?>
