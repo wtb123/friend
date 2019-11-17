@@ -153,4 +153,17 @@ class Friend extends \yii\db\ActiveRecord
     {
         return Comment::find()->where(['friendcir_id'=>$this->id])->count();
     }
+
+    /**
+     * 删除朋友圈记录之前需要删除该条朋友圈的评论
+     */
+    public function beforeDelete()
+    {
+       parent::beforeDelete();
+       //这么写会报错，待研究
+       // $Comments=Comment::find()->where(['friendcir_id=:friendcir_id'],[':friendcir_id'=>$this->id])->all();
+        Comment::deleteAll('friendcir_id=:friendcir_id',[':friendcir_id'=>$this->id]);
+        return true;
+
+    }
 }

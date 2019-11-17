@@ -7,6 +7,7 @@ use common\models\Friend;
 use common\models\FriendSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
@@ -40,6 +41,7 @@ class FriendController extends Controller
      */
     public function actionIndex()
     {
+
 
         $searchModel=new FriendSearch();
         $dataProvider=$searchModel->search(Yii::$app->request->queryParams);
@@ -141,17 +143,23 @@ class FriendController extends Controller
     }
 
     /**
-     * Deletes an existing Friend model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * 删除一条朋友圈前需要做两件事
+     * step1.删除该朋友圈的图片
+     * step2.删除该朋友圈的评论::用重写beforeDelete()函数实现
+     *最后一步才是
+     * step3.删除该条朋友圈记录
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model=$this->findModel($id);
+        if (unlink($model->picture_url))
+        {
+            $this->findModel($id)->delete();
+            return $this->redirect(['index']);
+        } else {
+        throw new HttpException(500,'删除失败');
+        }
 
-        return $this->redirect(['index']);
     }
 
 
@@ -195,4 +203,5 @@ class FriendController extends Controller
             'added'=>$this->added,
         ]);
     }
+
 }

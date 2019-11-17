@@ -29,9 +29,17 @@ use yii\helpers\Url;
                 <span class="glyphicon glyphicon-edit"></span> <?= '编辑' ?>
             </a>
             <span class="item-line"></span>
-            <a href="<?= Url::toRoute(['/home/feed/delete']) ?>" data-clicklog="delete" onclick="return false;" title="<?= Yii::t('app', 'Are you sure to delete it?') ?>">
-                <span class="glyphicon glyphicon-trash"></span> <?= '删除' ?>
+            <!--暂时用不了，待研究
+            <a href="<?php // Url::toRoute(['friend/delete','id'=>$model->id],true) ?>" data-clicklog="delete" onclick="return false;" data="confirm:'你确定要删除它吗？';method:post">
+                <span class="glyphicon glyphicon-trash"></span> <?php // '删除' ?>
             </a>
+            -->
+            <?= Html::a('删除',['delete','id'=>$model->id],['class'=>'glyphicon glyphicon-trash','data'=>
+             [
+               'confirm'=>'您确定删除它吗？',
+               'method'=>'post',
+             ],
+             ])?>
             <span class="item-line"></span>
         <?php endif ?>
         <a href="<?= Url::toRoute(['/home/feed/delete']) ?>" data-clicklog="delete" onclick="return false;" title="<?= Yii::t('app', 'Are you sure to delete it?') ?>">

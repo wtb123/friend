@@ -30,11 +30,11 @@ use common\models\Comment;
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     <em><?= $model->user->username?></em>
                     <?php if($model->user_id==Yii::$app->user->identity->id):?>
-                    <?=Html::a('', ['delete','id'=>$model->id], ['class' => 'glyphicon glyphicon-trash',
-                        'data'=>[
+                        <?=Html::a('Hello World', ['delete','id'=>$model->id], ['class' => 'glyphicon glyphicon-trash',
+                            'data'=>[
                                 'confirm'=>'您确定要删除吗？',
-                            'method'=>'post',
-                        ]])
+                                'method'=>'post',
+                            ]])
                         ?>
                     <?php endif;?>
                 </div>
