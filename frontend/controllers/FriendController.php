@@ -103,6 +103,7 @@ class FriendController extends Controller
     public function actionUpload()
     {
         $model=new Friend();
+        $model->scenario='create';
         if($model->load(Yii::$app->request->post()))
         {
             $model->imageFile=UploadedFile::getInstance($model,'imageFile');
@@ -131,9 +132,10 @@ class FriendController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+        {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

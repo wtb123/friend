@@ -40,9 +40,10 @@ class Friend extends \yii\db\ActiveRecord
             [['user_id', 'create_time'], 'integer'],
             [['content', 'picture_url'], 'string', 'max' => 128],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['imageFile'],'file','skipOnEmpty'=>false,'extensions'=>'png,jpg'],
+            [['imageFile'],'file','skipOnEmpty'=>false,'extensions'=>'png,jpg','on'=>['create']],
         ];
     }
+
 
     /**
      * {@inheritdoc}

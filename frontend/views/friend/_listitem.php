@@ -17,7 +17,7 @@ use yii\helpers\Url;
     </div>
 
     <div class="comment">
-        <?=Html::a("评论({$model->commentCount})",$model->url.'#comments');?>
+        <?php //Html::a("评论({$model->commentCount})",$model->url.'#comments');?>
     </div>
 
 </div>
@@ -25,7 +25,7 @@ use yii\helpers\Url;
 <div class="widget-footer" style="background-color:#fafafa;width:522px;height:38.2px;padding:8px;">
     <div class="footer-detail">
         <?php if(Yii::$app->user->id ==$model->user->id): ?>
-            <a href="<?= Url::toRoute(['/home/feed/update']) ?>">
+            <a href="<?= Url::toRoute(['friend/update','id'=>$model->id]) ?>">
                 <span class="glyphicon glyphicon-edit"></span> <?= '编辑' ?>
             </a>
             <span class="item-line"></span>
@@ -42,8 +42,8 @@ use yii\helpers\Url;
              ])?>
             <span class="item-line"></span>
         <?php endif ?>
-        <a href="<?= Url::toRoute(['/home/feed/delete']) ?>" data-clicklog="delete" onclick="return false;" title="<?= Yii::t('app', 'Are you sure to delete it?') ?>">
-            <span class="glyphicon glyphicon-comment"></span> <?= '评论' ?>
+        <a href="<?= Url::toRoute(['/friend/detail','id'=>$model->id]) ?>">
+            <span class="glyphicon glyphicon-comment"></span> <?= "评论($model->commentCount)" ?>
         </a>
     </div>
 </div>

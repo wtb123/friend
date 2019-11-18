@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Friend */
@@ -14,8 +15,11 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?php $form=ActiveForm::begin()?>
 
+    <?= $form->field($model,'content')->textarea(['rows'=>3]);?>
+
+    <?= Html::submitButton('更新',['class' => 'btn btn-success'])?>
+
+    <?php ActiveForm::end();?>
 </div>
