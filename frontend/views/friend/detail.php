@@ -30,7 +30,7 @@ use common\models\Comment;
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     <em><?= $model->user->username?></em>
                     <?php if($model->user_id==Yii::$app->user->identity->id):?>
-                        <?=Html::a('Hello World', ['delete','id'=>$model->id], ['class' => 'glyphicon glyphicon-trash',
+                        <?=Html::a('删除', ['delete','id'=>$model->id], ['class' => 'glyphicon glyphicon-trash',
                             'data'=>[
                                 'confirm'=>'您确定要删除吗？',
                                 'method'=>'post',
@@ -48,7 +48,7 @@ use common\models\Comment;
             </div>
             <br>
             <div class="nav">
-                <?= Html::a("评论({$model->commentCount})",$model->url.'#comments');?>
+                <?php // Html::a("评论({$model->commentCount})",$model->url.'#comments');?>
             </div>
 
             <div id="comments">
@@ -63,10 +63,11 @@ use common\models\Comment;
                 <?php }?>
 
                 <?php if($model->commentCount>=1):?>
-                    <h5><?=$model->commentCount.'条评论';?></h5>
+                    <h5><?= $model->commentCount.'条评论';?></h5>
                     <?=$this->render('_comment',array(
-                        'post'=>$model,
+                        'model'=>$model,
                         'comments'=>$model->comments,
+                        'id'=>$model->user_id,
                     ))
                     ;?>
                 <?php endif;?>

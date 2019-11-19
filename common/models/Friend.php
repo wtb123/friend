@@ -43,8 +43,6 @@ class Friend extends \yii\db\ActiveRecord
             [['imageFile'],'file','skipOnEmpty'=>false,'extensions'=>'png,jpg','on'=>['create']],
         ];
     }
-
-
     /**
      * {@inheritdoc}
      */
